@@ -9,11 +9,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.RkCoding.bmicalculator.bmiCalculatorScreen.component.BmiScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BmiCalculatorScreen() {
+fun BmiCalculatorScreen(
+    state: BmiCalculatorState
+) {
+
+
 
     Scaffold(
         topBar = {
@@ -29,7 +33,7 @@ fun BmiCalculatorScreen() {
                 .padding(top = it.calculateTopPadding())
         ) {
 
-            BmiScreen()
+            BmiScreen(state = state)
 
         }
 
@@ -38,8 +42,3 @@ fun BmiCalculatorScreen() {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    BmiCalculatorScreen()
-}
