@@ -14,7 +14,8 @@ import com.RkCoding.bmicalculator.bmiCalculatorScreen.component.BmiScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BmiCalculatorScreen(
-    state: BmiCalculatorState
+    state: BmiCalculatorState,
+    onEvent: (BmiCalculatorEvent) -> Unit
 ) {
 
 
@@ -33,7 +34,10 @@ fun BmiCalculatorScreen(
                 .padding(top = it.calculateTopPadding())
         ) {
 
-            BmiScreen(state = state)
+            BmiScreen(
+                state = state,
+                onEvent = onEvent
+            )
 
         }
 

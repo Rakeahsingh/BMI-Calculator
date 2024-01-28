@@ -31,20 +31,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorEvent
 import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorState
-import com.RkCoding.bmicalculator.bmiCalculatorScreen.SheetTitle
 import com.RkCoding.bmicalculator.ui.theme.ButtonColor
 import com.RkCoding.bmicalculator.ui.theme.Orange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BmiScreen(
-    state: BmiCalculatorState
+    state: BmiCalculatorState,
+    onEvent: (BmiCalculatorEvent) -> Unit
 ) {
 
     val number = listOf("7","8","9","4","5","6","1","2","3","0",".","C")
@@ -65,11 +66,7 @@ fun BmiScreen(
                 ) {
                     BottomSheetDefaults.DragHandle()
                     Text(
-                        text = when(state.sheetTitle){
-                            SheetTitle.WEIGHT -> "Choose Weight Type"
-                            SheetTitle.HEIGHT -> "Choose Height Type"
-                            else -> "Select Any One"
-                                                     },
+                        text = state.sheetTitle,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -80,7 +77,12 @@ fun BmiScreen(
         ) {
 
             BottomSheetContent(
-                onCancelClick = { bottomSheetShow = false }
+                onCancelClick = { bottomSheetShow = false },
+                sheetContent = state.sheetContent,
+                onItemClick = {
+                    bottomSheetShow = false
+                    onEvent(BmiCalculatorEvent.BottomSheetItemClick(it))
+                }
             )
 
         }
@@ -115,7 +117,10 @@ fun BmiScreen(
                     fontWeight = FontWeight.Bold
                 )
 
-                IconButton(onClick = { bottomSheetShow = true }) {
+                IconButton(
+                    onClick = { bottomSheetShow = true
+                    onEvent(BmiCalculatorEvent.WeightClick) }
+                ) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = "Arrow Icon"
@@ -132,14 +137,15 @@ fun BmiScreen(
                         text = "80.00",
                         fontSize = 45.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Orange
+                        color = Color.Red
                     )
 
                     Text(
-                        text = "Kilogram",
+                        text = state.weightUnit,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Light,
-                        fontStyle = FontStyle.Italic
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Italic,
+                        color = Orange
                     )
                 }
 
@@ -169,12 +175,16 @@ fun BmiScreen(
                     fontWeight = FontWeight.Bold
                 )
 
-                IconButton(onClick = { bottomSheetShow = true }) {
+                IconButton(
+                    onClick = { bottomSheetShow = true
+                    onEvent(BmiCalculatorEvent.HeightClick) }
+                ) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = "Arrow Icon"
                     )
                 }
+
 
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -186,14 +196,15 @@ fun BmiScreen(
                         text = "157",
                         fontSize = 45.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Orange
+                        color = Color.Red
                     )
 
                     Text(
-                        text = "Centimeter",
+                        text = state.heightUnit,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Light,
-                        fontStyle = FontStyle.Italic
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Italic,
+                        color = Orange
                     )
                 }
 

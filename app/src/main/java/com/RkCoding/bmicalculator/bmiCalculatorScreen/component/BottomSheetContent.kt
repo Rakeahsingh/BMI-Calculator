@@ -1,5 +1,6 @@
 package com.RkCoding.bmicalculator.bmiCalculatorScreen.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -15,22 +16,25 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun BottomSheetContent(
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    sheetContent: List<String>,
+    onItemClick: (String) -> Unit
 ) {
 
-    Text(
-        text = "Weight",
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Italic
-    )
 
-    Text(
-        text = "Height",
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Italic
-    )
+    sheetContent.forEach { item ->
+        Text(
+            text = item,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            fontStyle = FontStyle.Italic,
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 15.dp, top = 8.dp)
+                .clickable { onItemClick(item) }
+        )
+    }
+
+
 
     Button(
         onClick = { onCancelClick() },
@@ -44,7 +48,7 @@ fun BottomSheetContent(
     ) {
         Text(
             text = "Cancel",
-            fontSize = 14.sp
+            fontSize = 18.sp
         )
     }
 

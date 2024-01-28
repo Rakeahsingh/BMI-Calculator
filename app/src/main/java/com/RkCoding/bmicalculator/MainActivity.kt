@@ -28,7 +28,10 @@ class MainActivity : ComponentActivity() {
                     val viewModel = viewModel<BmiCalculatorViewModel>()
                     val state by viewModel.state.collectAsState()
 
-                    BmiCalculatorScreen(state = state)
+                    BmiCalculatorScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent
+                    )
 
                 }
             }
