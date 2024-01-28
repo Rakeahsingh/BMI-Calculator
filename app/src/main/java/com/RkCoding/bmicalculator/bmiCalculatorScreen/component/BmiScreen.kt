@@ -134,7 +134,7 @@ fun BmiScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "80.00",
+                        text = state.weightValue,
                         fontSize = 45.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Red
@@ -193,7 +193,7 @@ fun BmiScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "157",
+                        text = state.heightValue,
                         fontSize = 45.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Red
@@ -227,12 +227,13 @@ fun BmiScreen(
                         modifier = Modifier.aspectRatio(1f),
                         number = number,
                         backgroundColor = if (number == "C") Orange else ButtonColor,
-                        onNumberClick = {  }
+                        onNumberClick = {
+                            onEvent(BmiCalculatorEvent.NumberButtonClick(number))
+                        }
                     )
                 }
             }
         }
-
 
 
     }

@@ -12,3 +12,8 @@ val Pink40 = Color(0xFF7D5260)
 
 val Orange = Color(0xFFFF9800)
 val ButtonColor = Color(0xFFBD87F3)
+
+val CustomCyan = Color(0xFF55bc95)
+val CustomBlue = Color(0xFF6192d5)
+val CustomGreen = Color(0xFF65ae0b)
+val CustomRed = Color(0xFFe3526f)
