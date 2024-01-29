@@ -40,7 +40,6 @@ fun BmiResultCard(
 
     Dialog(onDismissRequest = { onResetButtonClick()}
     ) {
-
         Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(15.dp))
