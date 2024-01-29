@@ -33,7 +33,7 @@ import com.RkCoding.bmicalculator.ui.theme.Orange
 @Composable
 fun BmiResultCard(
     bmi: Double,
-    bmiStage: String = "Normal",
+    bmiStage: String,
     bmiStageColor: Color = CustomGreen,
     onResetButtonClick: () -> Unit
 ) {
@@ -135,9 +135,9 @@ fun BmiResultCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = "16.0", fontSize = 18.sp, color = Color.DarkGray)
-                Text(text = "20.0", fontSize = 18.sp, color = Color.DarkGray)
+                Text(text = "18.5", fontSize = 18.sp, color = Color.DarkGray)
                 Text(text = "25.0", fontSize = 18.sp, color = Color.DarkGray)
-                Text(text = "30.0", fontSize = 18.sp, color = Color.DarkGray)
+                Text(text = "40.0", fontSize = 18.sp, color = Color.DarkGray)
             }
 
             Button(
@@ -158,10 +158,3 @@ fun BmiResultCard(
 
 }
 
-@Preview
-@Composable
-fun Preview() {
-    BmiResultCard(bmi = 0.00){
-
-    }
-}

@@ -9,7 +9,10 @@ data class BmiCalculatorState(
     val sheetTitle: String = "",
     val sheetContent: List<String> = emptyList(),
     val weightUnit: String = "Kilogram",
-    val heightUnit: String = "Centimetre"
+    val heightUnit: String = "Centimetre",
+    val bmi: Double = 0.0,
+    val bmiStage: String = "",
+    val error: String? = null
 )
 
 
