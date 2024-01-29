@@ -1,5 +1,7 @@
 package com.RkCoding.bmicalculator.bmiCalculatorScreen.component
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -23,8 +27,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,13 +39,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorEvent
 import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorState
+import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorViewModel
 import com.RkCoding.bmicalculator.ui.theme.ButtonColor
+import com.RkCoding.bmicalculator.ui.theme.CustomGreen
 import com.RkCoding.bmicalculator.ui.theme.Orange
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,8 +67,20 @@ fun BmiScreen(
     var bottomSheetShow by remember {
         mutableStateOf(false)
     }
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
 
-    if (bottomSheetShow){
+    if (showDialog){
+        BmiResultCard(
+            bmi = 55.00,
+            onResetButtonClick = {
+                showDialog = false
+            }
+        )
+    }else {
+
+        if (bottomSheetShow){
         ModalBottomSheet(
             onDismissRequest = { bottomSheetShow = false },
             sheetState = modalSheetState,
@@ -101,7 +126,7 @@ fun BmiScreen(
                 .padding(12.dp),
             elevation = CardDefaults.cardElevation(4.dp),
 
-        ) {
+            ) {
 
             Row(
                 modifier = Modifier
@@ -118,8 +143,10 @@ fun BmiScreen(
                 )
 
                 IconButton(
-                    onClick = { bottomSheetShow = true
-                    onEvent(BmiCalculatorEvent.WeightClick) }
+                    onClick = {
+                        bottomSheetShow = true
+                        onEvent(BmiCalculatorEvent.WeightClick)
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
@@ -137,7 +164,14 @@ fun BmiScreen(
                         text = state.weightValue,
                         fontSize = 45.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Red
+                        color = Color.Red,
+                        modifier = Modifier.clickable(
+                            interactionSource = MutableInteractionSource(),
+                            indication = null,
+                            onClick = {
+                                onEvent(BmiCalculatorEvent.WeightValueClick)
+                            }
+                        )
                     )
 
                     Text(
@@ -176,8 +210,10 @@ fun BmiScreen(
                 )
 
                 IconButton(
-                    onClick = { bottomSheetShow = true
-                    onEvent(BmiCalculatorEvent.HeightClick) }
+                    onClick = {
+                        bottomSheetShow = true
+                        onEvent(BmiCalculatorEvent.HeightClick)
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
@@ -196,8 +232,16 @@ fun BmiScreen(
                         text = state.heightValue,
                         fontSize = 45.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Red
+                        color = Color.Red,
+                        modifier = Modifier.clickable(
+                            interactionSource = MutableInteractionSource(),
+                            indication = null,
+                            onClick = {
+                                onEvent(BmiCalculatorEvent.HeightValueClick)
+                            }
+                        )
                     )
+
 
                     Text(
                         text = state.heightUnit,
@@ -214,30 +258,62 @@ fun BmiScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp)){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp)
+        ) {
 
             LazyVerticalGrid(
                 modifier = Modifier.padding(horizontal = 30.dp, vertical = 12.dp),
                 columns = GridCells.Fixed(3)
-            ){
-                items(number){ number ->
+            ) {
+                items(number) { number ->
                     KeyboardButton(
-                        modifier = Modifier.aspectRatio(1f),
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .bounceClick(),
                         number = number,
                         backgroundColor = if (number == "C") Orange else ButtonColor,
                         onNumberClick = {
-                            onEvent(BmiCalculatorEvent.NumberButtonClick(number))
+                            onEvent(BmiCalculatorEvent.NumberButtonClick(it))
                         }
                     )
                 }
             }
         }
 
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                showDialog = true
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = CustomGreen,
+                contentColor = Color.White
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+                .bounceClick()
+        ) {
+            Text(
+                text = "Submit Bmi",
+                fontSize = 20.sp
+            )
+        }
+      }
 
     }
 
 }
 
+
+@Preview
+@Composable
+fun Pre() {
+    val viewModel = viewModel<BmiCalculatorViewModel>()
+    val state by viewModel.state.collectAsState()
+   BmiScreen(state = state, onEvent = viewModel::onEvent)
+}
 

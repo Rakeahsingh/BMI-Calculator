@@ -1,8 +1,8 @@
 package com.RkCoding.bmicalculator.bmiCalculatorScreen
 
 data class BmiCalculatorState(
-    val weightValue: String = "80.0",
-    val heightValue: String = "157",
+    val weightValue: String = "60.0",
+    val heightValue: String = "147",
     val weightValueStage: WeightValueStage = WeightValueStage.INACTIVE,
     val heightValueStage: HeightValueStage = HeightValueStage.INACTIVE,
     val showBmiCard: Boolean = false,
