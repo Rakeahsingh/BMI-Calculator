@@ -11,5 +11,6 @@ sealed class BmiCalculatorEvent {
     data object HeightValueClick: BmiCalculatorEvent()
     data class NumberButtonClick(val number: String): BmiCalculatorEvent()
     data class GoButtonClick(val context: Context): BmiCalculatorEvent()
+    data object ResetButtonClick: BmiCalculatorEvent()
 
 }

@@ -1,5 +1,6 @@
 package com.RkCoding.bmicalculator.bmiCalculatorScreen.component
 
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +49,9 @@ import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorEvent
 import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorState
 import com.RkCoding.bmicalculator.bmiCalculatorScreen.BmiCalculatorViewModel
 import com.RkCoding.bmicalculator.ui.theme.ButtonColor
+import com.RkCoding.bmicalculator.ui.theme.CustomBlue
 import com.RkCoding.bmicalculator.ui.theme.CustomGreen
+import com.RkCoding.bmicalculator.ui.theme.CustomRed
 import com.RkCoding.bmicalculator.ui.theme.Orange
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,12 +73,32 @@ fun BmiScreen(
         mutableStateOf(false)
     }
 
+    val sendIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(
+            Intent.EXTRA_TEXT,
+            "Hey Guys CheckOut my Body Mass Index: ${state.bmi} BMI," +
+                  "which is considered ${state.bmiStage}"
+        )
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+
     if (showDialog){
         BmiResultCard(
             bmi = state.bmi,
             bmiStage = state.bmiStage,
+            bmiStageColor = when(state.bmiStage){
+                "Underweight" -> CustomBlue
+                "Normal" -> CustomGreen
+                else -> CustomRed
+            },
             onResetButtonClick = {
                 showDialog = false
+                onEvent(BmiCalculatorEvent.ResetButtonClick)
+            },
+            onShareButtonClick = {
+                context.startActivity(shareIntent)
             }
         )
     }else {

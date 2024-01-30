@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -35,7 +36,8 @@ fun BmiResultCard(
     bmi: Double,
     bmiStage: String,
     bmiStageColor: Color = CustomGreen,
-    onResetButtonClick: () -> Unit
+    onResetButtonClick: () -> Unit,
+    onShareButtonClick: () -> Unit
 ) {
 
     Dialog(onDismissRequest = { onResetButtonClick()}
@@ -61,6 +63,8 @@ fun BmiResultCard(
                     fontSize = 70.sp,
                     color = Orange
                 )
+
+                Spacer(modifier = Modifier.width(10.dp))
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
@@ -134,24 +138,52 @@ fun BmiResultCard(
                     .padding(vertical = 10.dp, horizontal = 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "16.0", fontSize = 18.sp, color = Color.DarkGray)
+                Text(text = "0.0", fontSize = 18.sp, color = Color.DarkGray)
                 Text(text = "18.5", fontSize = 18.sp, color = Color.DarkGray)
                 Text(text = "25.0", fontSize = 18.sp, color = Color.DarkGray)
                 Text(text = "40.0", fontSize = 18.sp, color = Color.DarkGray)
             }
 
-            Button(
-                onClick = { onResetButtonClick() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Orange,
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 8.dp)
-                    .bounceClick()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Reset", fontSize = 20.sp)
+                Button(
+                    onClick = { onResetButtonClick() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Orange,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .bounceClick()
+                ) {
+                    Text(text = "Reset", fontSize = 20.sp)
+                }
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Button(
+                    onClick = { onShareButtonClick() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = CustomBlue,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .bounceClick()
+                ) {
+                    Text(text = "Share", fontSize = 20.sp)
+                }
+
             }
+
+
 
         }
     }
